@@ -3,7 +3,7 @@ const UpgradeScripts = require('./src/upgrades')
 const UpdateActions = require('./src/actions')
 const UpdateFeedbacks = require('./src/feedbacks')
 const UpdateVariableDefinitions = require('./src/variables')
-const {PortsConfig, SetRedOnInput, SetRedOnOutput} = require('./src/Controller')
+const {PortsConfig, SetRedOnInput, SetRedOnOutput, TraceTally} = require('./src/Controller')
 
 class ModuleInstance extends InstanceBase {
 	constructor(internal) {
@@ -46,24 +46,6 @@ class ModuleInstance extends InstanceBase {
 				label: 'Outputs count',
 				width: 3,
 				default: 10,
-			},
-			{
-				type: 'checkbox',
-				id: 'red',
-				label: 'Calculate red tally',
-				default: true,
-			},
-			{
-				type: 'checkbox',
-				id: 'green',
-				label: 'Calculate green tally',
-				default: false,
-			},
-			{
-				type: 'checkbox',
-				id: 'yellow',
-				label: 'Calculate yellow tally',
-				default: false,
 			}
 		]
 	}
@@ -83,12 +65,15 @@ class ModuleInstance extends InstanceBase {
 		//UpdateVariableDefinitions(this)
 	}
 
-	setRedOnInput(input) {
-		SetRedOnInput(id, value, user);
+	setRedOnInput(port, value) {
+		SetRedOnInput(this, port, value);
 	}
 
-	setRedOnOutput(output) {
-		SetRedOnOutput(id, value, user);
+	setRedOnOutput(port, value) {
+		SetRedOnOutput(this, port, value);
+	}
+	traceTally() {
+		TraceTally(this);
 	}
 }
 

@@ -8,25 +8,35 @@ module.exports = {
         for (let i = 0; i < self.config.input; i++) {
             self.inputs.push(new Input(self, i));
         }
-        self.log('debug', 'Inputs created');
-        self.log('debug', JSON.stringify(self.variables));
+        for (let i = 0; i < self.config.output; i++) {
+            self.outputs.push(new Output(self, i));
+        }
         self.setVariableDefinitions(self.variables);
+
+        self.traceTally();
     },
 
-    SetRedOnInput: function (id, value, user) {
-        if (self.inputs[id - 1].redState.SetState(value, user)) {
-            //find all outputs that are connected to this input
-            self.outputs.filter(output => output.input === id).forEach(element => {
-                SetRedOnOutput(element.id, value, false);
-            });;
-
+    SetRedOnInput: function (self, id, value) {
+        if (self.inputs[id - 1].SetState(value)) {
+           self.traceTally();
         }
     },
 
-    SetRedOnOutput: function (id, value, user) {
-        if (self.outputs[id - 1].redState.SetState(value, user)) {
-            //red tally on input of this output
-            SetRedOnInput(self.output[id - 1].input, value, false);
+    SetRedOnOutput: function (self, id, value) {
+        if (self.outputs[id - 1].SetState(value)) {
+            self.log('debug', 'SetRedOnOutput ' + id + ' ' + value);
+            self.traceTally();
         }
+    },
+
+    TraceTally: function (self) {
+        self.outputs.forEach(element => {
+            element.GetState(true);
+        });
+        self.inputs.forEach(element => {
+            element.GetState(null);
+        });
+        
     }
+
 }

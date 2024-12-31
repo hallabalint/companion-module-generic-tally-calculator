@@ -1,17 +1,38 @@
-const State = require('./state');
 module.exports = class Input {
     constructor(controller, id) {
-        this.id = id
-        let redName = 'router_input_red_' + id
-        let greenName = 'router_input_green_' + id
-        let yellowName = 'router_input_yellow_' + id
-        this.redState = new State(redName);
-        this.greenState = new State(greenName);
-        this.yellowState = new State(yellowName);
+        this.id = id + 1
+        this.redName = 'router_input_red_' + this.id
+        this.redState = false
         this.controller = controller;
-        
-        controller.config.red ? controller.variables.push({variableId: redName, name: 'Calculated red tally on router input ' + id }):'';
-        controller.config.green ? controller.variables.push({variableId: greenName, name: 'Calculated green tally on router input ' + id }):'';
-        controller.config.yellow ? controller.variables.push({variableId: yellowName, name: 'Calculated yellow tally on router input ' + id }):'';
+        controller.variables.push({ variableId: this.redName, name: 'Calculated red tally on router input ' + this.id });
+    }
+
+    GetState(caller) {
+        let self = this;
+        this.controller.log('debug', 'GetState input ' + this.id);
+        if (this.redState) {
+            return true;
+        }
+        //find all outputs of this input
+        this.controller.outputs.filter(output => output.input == this.id).forEach(element => {
+
+            if (element.GetState(false)) {
+                self.controller.log('debug', 'element: ' + element.input + ' ' + element.id);
+                self.controller.log('debug', self.redName)
+                self.controller.setVariableValues({ [self.redName]: 1 });
+                return true;
+            }
+        });
+        this.controller.setVariableValues({ [this.redName]: 0 });
+        return false;
+    }
+
+    SetState(value) {
+        if (this.redState != value) {
+            this.redState = value;
+            this.controller.setVariableValues({ [this.redName]: this.redState ? 1 : 0 });
+            return true;
+        }
+        return false;
     }
 }

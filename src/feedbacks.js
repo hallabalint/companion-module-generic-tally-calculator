@@ -2,10 +2,10 @@ const { combineRgb } = require('@companion-module/base')
 
 module.exports = async function (self) {
 	self.setFeedbackDefinitions({
-		ChannelState: {
-			name: 'Example Feedback',
+		InputState: {
+			name: 'Tally on input port',
 			type: 'boolean',
-			label: 'Channel State',
+			label: 'Tally State',
 			defaultStyle: {
 				bgcolor: combineRgb(255, 0, 0),
 				color: combineRgb(0, 0, 0),
@@ -17,16 +17,33 @@ module.exports = async function (self) {
 					label: 'Test',
 					default: 5,
 					min: 0,
-					max: 10,
+					max: 1000,
 				},
 			],
 			callback: (feedback) => {
-				console.log('Hello world!', feedback.options.num)
-				if (feedback.options.num > 5) {
-					return true
-				} else {
-					return false
-				}
+				return self.inputs[feedback.options.num-1].getState(null);
+			},
+		},
+		OutputState: {
+			name: 'Tally on output port',
+			type: 'boolean',
+			label: 'Tally State',
+			defaultStyle: {
+				bgcolor: combineRgb(255, 0, 0),
+				color: combineRgb(0, 0, 0),
+			},
+			options: [
+				{
+					id: 'num',
+					type: 'number',
+					label: 'Test',
+					default: 5,
+					min: 0,
+					max: 1000,
+				},
+			],
+			callback: (feedback) => {
+				return self.outputs[feedback.options.num-1].getState(true);
 			},
 		},
 	})

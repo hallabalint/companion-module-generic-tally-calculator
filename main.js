@@ -3,6 +3,7 @@ const UpgradeScripts = require('./src/upgrades')
 const UpdateActions = require('./src/actions')
 const UpdateFeedbacks = require('./src/feedbacks')
 const UpdateVariableDefinitions = require('./src/variables')
+const {PortsConfig, SetRedOnInput, SetRedOnOutput} = require('./src/Controller')
 
 class ModuleInstance extends InstanceBase {
 	constructor(internal) {
@@ -11,12 +12,13 @@ class ModuleInstance extends InstanceBase {
 
 	async init(config) {
 		this.config = config
-
+		
 		this.updateStatus(InstanceStatus.Ok)
 
 		this.updateActions() // export actions
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
+		this.initPortConfig()
 	}
 	// When module gets deleted
 	async destroy() {
@@ -25,6 +27,7 @@ class ModuleInstance extends InstanceBase {
 
 	async configUpdated(config) {
 		this.config = config
+		this.initPortConfig()
 	}
 
 	// Return config fields for web config
@@ -35,7 +38,6 @@ class ModuleInstance extends InstanceBase {
 				id: 'input',
 				label: 'Input count',
 				width: 3,
-				regex: Regex.NUMBER,
 				default: 10,
 			},
 			{
@@ -43,7 +45,6 @@ class ModuleInstance extends InstanceBase {
 				id: 'output',
 				label: 'Outputs count',
 				width: 3,
-				regex: Regex.NUMBER,
 				default: 10,
 			},
 			{
@@ -66,6 +67,9 @@ class ModuleInstance extends InstanceBase {
 			}
 		]
 	}
+	initPortConfig() {
+		PortsConfig(this);
+	}
 
 	updateActions() {
 		UpdateActions(this)
@@ -76,7 +80,15 @@ class ModuleInstance extends InstanceBase {
 	}
 
 	updateVariableDefinitions() {
-		UpdateVariableDefinitions(this)
+		//UpdateVariableDefinitions(this)
+	}
+
+	setRedOnInput(input) {
+		SetRedOnInput(id, value, user);
+	}
+
+	setRedOnOutput(output) {
+		SetRedOnOutput(id, value, user);
 	}
 }
 

@@ -1,31 +1,28 @@
-module.export = class State {
-    constructor() {
-        this.red = false;
-        this.green = false;
-        this.yellow = false;
+module.exports = class State {
+    constructor(controller, varName) {
+        this.varName = varName;
+        this.userActive = false;
+        this.calculateActive = false;
+        this.controller = controller;
     }
 
-    setRed(state) {
-        this.red = state;
+    GetState() {
+        return this.userActive || this.calculateActive;
     }
 
-    setGreen(state) {
-        this.green = state;
-    }
-
-    setYellow(state) {
-        this.yellow = state;
-    }
-
-    getRed() {
-        return this.red;
-    }
-
-    getGreen() {
-        return this.green;
-    }
-
-    getYellow() {
-        return this.yellow;
+    SetState(state, user) {
+        if (user) {
+            if (this.GetState() === state) {
+                return false;
+            }
+            this.userActive = state;
+        } else {
+            if (this.GetState() === state) {
+                return false;
+            }
+            this.calculateActive = state;
+        }
+        this.controller.setVariableValue(this.varName, this.GetState()?1:0);
+        return true;
     }
 }

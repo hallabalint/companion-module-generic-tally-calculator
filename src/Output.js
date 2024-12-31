@@ -10,6 +10,7 @@ module.exports = class Input {
 
     SetInput(input) {
         this.input = input;
+        this.controller.traceTally();
     }
 
     GetState(recusive) {

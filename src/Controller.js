@@ -37,6 +37,7 @@ module.exports = {
         self.inputs.forEach(element => {
             element.GetState(null);
         });
+        self.checkFeedbacks('InputState', 'OutputState');
         
     }
 

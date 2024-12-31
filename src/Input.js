@@ -11,18 +11,19 @@ module.exports = class Input {
         let self = this;
         this.controller.log('debug', 'GetState input ' + this.id);
         if (this.redState) {
+            self.controller.setVariableValues({ [self.redName]: 1 });
             return true;
         }
         //find all outputs of this input
-        this.controller.outputs.filter(output => output.input == this.id).forEach(element => {
+        let result = false;
+        let outputs = this.controller.outputs.filter(output => output.input == this.id);
 
+        for (let element of outputs) {
             if (element.GetState(false)) {
-                self.controller.log('debug', 'element: ' + element.input + ' ' + element.id);
-                self.controller.log('debug', self.redName)
                 self.controller.setVariableValues({ [self.redName]: 1 });
-                return true;
+                return true
             }
-        });
+        }
         this.controller.setVariableValues({ [this.redName]: 0 });
         return false;
     }

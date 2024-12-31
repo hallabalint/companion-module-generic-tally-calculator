@@ -15,7 +15,7 @@ module.exports = class Input {
     GetState(recusive) {
         this.controller.log('debug', 'GetState output ' + this.id);
         if (recusive && this.input > 0) {
-            let red =  this.controller.inputs[this.input - 1].GetState(true, this) || this.redState;
+            let red =  this.controller.inputs[this.input - 1].GetState(this) || this.redState;
             this.controller.setVariableValues({ [this.redName]: red ? 1 : 0 });
             return red;
         } else {

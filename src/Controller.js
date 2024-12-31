@@ -31,6 +31,7 @@ module.exports = {
 
     TraceTally: function (self) {
         self.outputs.forEach(element => {
+            self.log('debug', element.input + ' ' + element.id);
             element.GetState(true);
         });
         self.inputs.forEach(element => {

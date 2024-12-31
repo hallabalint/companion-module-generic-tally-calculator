@@ -19,8 +19,8 @@ module.exports = function (self) {
 				},
 			],
 			callback: async (event) => {
-				let id = parseInt(event.options.x) - 1;
-				self.outputs[id].SetInput(event.options.y);
+				let id = parseInt(event.options.y) - 1;
+				self.outputs[id].SetInput(event.options.x);
 			},
 		},
 		setTallyOutput: {

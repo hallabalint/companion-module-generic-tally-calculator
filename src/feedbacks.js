@@ -14,14 +14,18 @@ module.exports = async function (self) {
 				{
 					id: 'num',
 					type: 'number',
-					label: 'Test',
+					label: 'Port',
 					default: 5,
 					min: 0,
 					max: 1000,
 				},
 			],
 			callback: (feedback) => {
-				return self.inputs[feedback.options.num-1].getState(null);
+				let port = parseInt(feedback.options.num)
+				if (isNaN(port)) {
+					return
+				}
+				return self.inputs[port-1].GetState(null);
 			},
 		},
 		OutputState: {
@@ -36,14 +40,18 @@ module.exports = async function (self) {
 				{
 					id: 'num',
 					type: 'number',
-					label: 'Test',
+					label: 'Port',
 					default: 5,
 					min: 0,
 					max: 1000,
 				},
 			],
 			callback: (feedback) => {
-				return self.outputs[feedback.options.num-1].getState(true);
+				let port = parseInt(feedback.options.num)
+				if (isNaN(port)) {
+					return
+				}
+				return self.outputs[port-1].GetState(true);
 			},
 		},
 	})

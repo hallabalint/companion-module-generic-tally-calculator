@@ -5,10 +5,12 @@ module.exports = function (self) {
 			options: [
 				{
 					id: 'x',
-					type: 'number',
+					type: 'textinput',
 					label: 'Source',
-					default: 5,
-					min: 1,
+					default: "5",
+					useVariables: true,
+					regex: "/^[0-9]+$/",
+
 				},
 				{
 					id: 'y',
@@ -20,7 +22,14 @@ module.exports = function (self) {
 			],
 			callback: async (event) => {
 				let id = parseInt(event.options.y) - 1;
-				self.outputs[id].SetInput(event.options.x);
+				let x  = await self.parseVariablesInString(event.options.x)
+				let source = parseInt(x)
+				if (isNaN(source)) {
+					self.log('error', 'Invalid source');
+					return
+				}
+				self.outputs[id].SetInput(source);
+				self.traceTally();
 			},
 		},
 		setTallyOutput: {

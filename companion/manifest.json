@@ -3,7 +3,7 @@
 	"name": "Generic: Tally calculator",
 	"shortname": "tally-calculator",
 	"description": "Tally calculator based on router state",
-	"version": "0.1.1",
+	"version": "0.2.1",
 	"license": "MIT",
 	"repository": "git+https://github.com/hallabalint/companion-module-generic-tally-caluclator.git",
 	"bugs": "https://github.com/hallabalint/companion-module-generic-tally-caluclator/issues",

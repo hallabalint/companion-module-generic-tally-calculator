@@ -12,7 +12,12 @@ module.exports = {
             self.outputs.push(new Output(self, i));
         }
         for (let i = 0; i < self.config.input; i++) {
-            self.inputs[i].SetName(self.config?.names[i] || '', false);
+            let name = '';
+            try {
+                name = self.config.inputs[i];
+            } catch (error) {
+            }
+            self.inputs[i].SetName(name, false);
 
         }
         self.setVariableDefinitions(self.variables);

@@ -11,14 +11,18 @@ module.exports = {
         for (let i = 0; i < self.config.output; i++) {
             self.outputs.push(new Output(self, i));
         }
-        self.setVariableDefinitions(self.variables);
+        for (let i = 0; i < self.config.input; i++) {
+            self.inputs[i].SetName(self.config?.names[i] || '', false);
 
+        }
+        self.setVariableDefinitions(self.variables);
+        self.updateNames();
         self.traceTally();
     },
 
     SetRedOnInput: function (self, id, value) {
         if (self.inputs[id - 1].SetState(value)) {
-           self.traceTally();
+            self.traceTally();
         }
     },
 
@@ -38,7 +42,26 @@ module.exports = {
             element.GetState(null);
         });
         self.checkFeedbacks('InputState', 'OutputState');
-        
-    }
+
+    },
+
+    UpdateNames: function (self) {
+        self.outputs.forEach(element => {
+            element.SetName();
+        });
+
+        let names = [];
+        self.inputs.forEach(element => {
+            names.push(element.GetName());
+        });
+        self.config['names'] = names;
+        self.log('info',JSON.stringify(self.config));
+        //self.config.options.names = names;
+        self.saveConfig(self.config);
+
+    },
+    SetName: function (self, id, name) {
+        self.inputs[id - 1].SetName(name);
+    },
 
 }

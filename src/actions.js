@@ -79,7 +79,31 @@ module.exports = function (self) {
 			callback: async (event) => {
 				self.setRedOnInput(event.options.portnumber, event.options.state);
 			},
+		},
+		setSourceName: {
+			name: 'Set Source Name on Input port',
+			options: [
+				{
+					id: 'portnumber',
+					type: 'number',
+					label: 'Port',
+					default: 5,
+					min: 1,
+				},
+				{
+					id: 'name',
+					type: 'textinput',
+					label: 'Tally',
+					default: 'Camera 1',
+					useVariables: true,
+				},
+			],
+			callback: async (event) => {
+				let name = await self.parseVariablesInString(event.options.name);
+				self.setName(event.options.portnumber, name);
+			},
 		}
+
 	})
 
 }

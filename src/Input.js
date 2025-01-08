@@ -5,8 +5,18 @@ module.exports = class Input {
         this.redState = false
         this.controller = controller;
         controller.variables.push({ variableId: this.redName, name: 'Calculated red tally on router input ' + this.id });
+        this.name = "";
     }
 
+    SetName(name, update = true) {
+        this.name = name;
+        if (update)
+            this.controller.updateNames();
+    }
+
+    GetName() {
+        return this.name;
+    }
     GetState(caller) {
         let self = this;
         this.controller.log('debug', 'GetState input ' + this.id);

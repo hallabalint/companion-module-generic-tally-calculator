@@ -3,7 +3,7 @@ const UpgradeScripts = require('./src/upgrades')
 const UpdateActions = require('./src/actions')
 const UpdateFeedbacks = require('./src/feedbacks')
 const UpdateVariableDefinitions = require('./src/variables')
-const {PortsConfig, SetRedOnInput, SetRedOnOutput, TraceTally} = require('./src/Controller')
+const { PortsConfig, SetRedOnInput, SetRedOnOutput, TraceTally, UpdateNames, SetName } = require('./src/Controller')
 
 class ModuleInstance extends InstanceBase {
 	constructor(internal) {
@@ -12,7 +12,7 @@ class ModuleInstance extends InstanceBase {
 
 	async init(config) {
 		this.config = config
-		
+
 		this.updateStatus(InstanceStatus.Ok)
 
 		this.updateActions() // export actions
@@ -74,6 +74,12 @@ class ModuleInstance extends InstanceBase {
 	}
 	traceTally() {
 		TraceTally(this);
+	}
+	updateNames() {
+		UpdateNames(this)
+	}
+	setName(id, name) {
+		SetName(this, id, name)
 	}
 }
 
